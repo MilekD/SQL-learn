@@ -11,7 +11,7 @@ grant expense_tracker_group to expense_tracker_user
 
 drop table if exists expense_tracker.bank_account_owner cascade;
 create table if not exists expense_tracker.bank_account_owner (
-	id_ba_own int primary key,
+	id_ba_own serial primary key,
 	owner_name varchar(50) not null,
 	owner_desc varchar(250),
 	user_login int not null,
@@ -23,7 +23,7 @@ create table if not exists expense_tracker.bank_account_owner (
 
 drop table if exists expense_tracker.bank_account_types cascade;
 create table if not exists expense_tracker.bank_account_types (
-	id_ba_type int primary key,
+	id_ba_type serial primary key,
 	ba_type varchar(50) not null,
 	ba_desc varchar(250),
 	active boolean default 'True' not null,
@@ -36,7 +36,7 @@ create table if not exists expense_tracker.bank_account_types (
 
 drop table if exists expense_tracker.transaction_bank_accounts cascade;	
 create table if not exists expense_tracker.transaction_bank_accounts(
-	id_trans_ba int primary key,
+	id_trans_ba serial primary key,
 	id_ba_own int,
 	id_ba_type int,
 	bank_account_name varchar(50) not null,
@@ -51,7 +51,7 @@ create table if not exists expense_tracker.transaction_bank_accounts(
 
 drop table if exists expense_tracker.transactions_category cascade;
 create table if not exists expense_tracker.transaction_category(
-	id_trans_cat int primary key,
+	id_trans_cat serial primary key,
 	category_name varchar(50) not null,
 	category_description varchar(250),
 	active boolean default 'True' not null,
@@ -61,7 +61,7 @@ create table if not exists expense_tracker.transaction_category(
 
 drop table if exists expense_tracker.transactions_subcategory cascade;
 create table if not exists expense_tracker.transaction_subcategory(
-	id_trans_subcat int primary key,
+	id_trans_subcat serial primary key,
 	id_trans_cat int,
 	subcategory_name varchar(50) not null,
 	subcategory_description varchar(250),
@@ -73,7 +73,7 @@ create table if not exists expense_tracker.transaction_subcategory(
 
 drop table if exists expense_tracker.transactions_type cascade;
 create table if not exists expense_tracker.transaction_type(
-	id_trans_type int primary key,
+	id_trans_type serial primary key,
 	transaction_type_name varchar(50),
 	transaction_type_description varchar(250),
 	active boolean default 'True' not null,
@@ -83,7 +83,7 @@ create table if not exists expense_tracker.transaction_type(
 
 drop table if exists expense_tracker.users cascade;
 create table if not exists expense_tracker.users(
-	id_user int primary key,
+	id_user serial primary key,
 	user_login varchar(25) not null,
 	user_name varchar(50) not null,
 	user_password varchar(100) not null,
@@ -95,7 +95,7 @@ create table if not exists expense_tracker.users(
 
 drop table if exists expense_tracker.transactions cascade;	
 create table if not exists expense_tracker.transactions (
-	id_transaction int primary key,
+	id_transaction serial primary key,
 	id_trans_ba int,
 	id_trans_cat int,
 	id_trans_subcat int,
