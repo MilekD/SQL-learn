@@ -17,7 +17,7 @@ create table if not exists expense_tracker.bank_account_owner (
 	user_login int not null,
 	active boolean default 'True' not null,
 	insert_date timestamp default current_timestamp,
-	update_date timestamp default current_timestamp,
+	update_date timestamp default current_timestamp
 	);
 	
 
@@ -112,3 +112,36 @@ create table if not exists expense_tracker.transactions (
 	foreign key (id_trans_type) references expense_tracker.transaction_type (id_trans_type),
 	foreign key (id_user) references expense_tracker.users (id_user)
 	);
+	
+	
+insert into expense_tracker.bank_account_owner (owner_name,owner_desc,user_login)
+values('Jan','description',33)
+;
+
+insert into expense_tracker.bank_account_types (ba_type,ba_desc,id_ba_own)
+values('AB','description',1)
+;
+
+insert into expense_tracker.transaction_bank_accounts (id_ba_own,id_ba_type,bank_account_name,bank_account_desc)
+values(1,1,'ING','description')
+;
+
+insert into expense_tracker.transaction_category (category_name,category_description)
+values('car','description')
+;
+
+insert into expense_tracker.transaction_subcategory (id_trans_cat,subcategory_name,subcategory_description)
+values(1,'A','description')
+;
+
+insert into expense_tracker.transaction_type (transaction_type_name,transaction_type_description)
+values('S','description')
+;
+
+insert into expense_tracker.users (user_login,user_name,user_password,password_salt)
+values('login','Jan','pass','aa')
+;
+
+insert into expense_tracker.transactions(id_trans_ba,id_trans_cat,id_trans_subcat,id_trans_type,id_user,transaction_value,transaction_description)
+values(1,1,1,1,1,5,'description')
+;
