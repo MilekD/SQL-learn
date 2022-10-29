@@ -24,18 +24,20 @@ order by sal_value desc, sal_date asc ;
 --5--
 select *
 from products p 
-where not exists(select 1
-			 	from sales s
-				 where p.id = s.sal_product_id
-			 );
+where not exists(
+	select 1
+	from sales s
+	 where p.id = s.sal_product_id
+	 );
 		
 --6--
 select * 
 from products p 
-where p.id=ANY(select s.sal_product_id
-				from sales s
-				where s.sal_value>100
-			  );
+where p.id=ANY(
+	select s.sal_product_id
+	from sales s
+	where s.sal_value>100
+	);
 		
 		
 --7--
@@ -65,11 +67,11 @@ select * from products_old_warehouse
 		
 --8--
 select product_name,
-	   product_code
+	product_code
 from   products 
 union 
 select product_name,
-	   product_code
+	product_code
 from products_old_warehouse    --jak wziac 5 dowolnych wierszy z products?
 
 --9--
