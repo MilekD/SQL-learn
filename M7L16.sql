@@ -65,7 +65,7 @@ where p.product_name in(select
 				on p.product_man_region=pr.id
 				where pr.region_name = 'EMEA')
 limit 100
-
+;
 
 --2--
 select p.*,
@@ -73,7 +73,7 @@ select p.*,
 from products p 
 left join product_manufactured_region pr
 on p.product_man_region=pr.id and pr.established_year>2012
-
+;
 
 --3--
 select p.*,
@@ -82,7 +82,7 @@ from products p
 left join product_manufactured_region pr
 on p.product_man_region=pr.id
 where pr.established_year>2012
-
+;
 
 --4--
 
@@ -94,16 +94,18 @@ right join (select p.id, p.product_quantity,p.product_name
 			where p.product_quantity>5) pr 
 			on s.sal_prd_id=pr.id
 order by 1 desc
+;
 
 --5--
 insert into product_manufactured_region (region_name,region_code,established_year)
 values ('South America',null,2013)
-
+;
 select p.*,
 pr.*
 from products p
 full join product_manufactured_region pr
 on p.product_man_region=pr.id
+;
 
 --6--
 select p.*,
@@ -117,3 +119,41 @@ pr.*
 from products p
 right join product_manufactured_region pr
 on p.product_man_region=pr.id
+;
+
+--7--
+with subquery as (
+	select p.id, p.product_quantity,p.product_name  
+			from products p 
+			where p.product_quantity>5 
+) 
+select distinct(su.product_name),
+	   extract(year from s.sal_date) ||'_'|| extract(month from s.sal_date) as ROK_MIESIAC
+from sales s 
+right join subquery su
+on s.sal_prd_id=su.id
+order by 1 desc
+;
+
+--8--
+delete from products p
+where exists (select
+				*
+				from products p2
+				left join product_manufactured_region pr
+				on p2.product_man_region=pr.id
+				where pr.region_name = 'EMEA' 
+				and pr.region_code ='E_EMEA')
+returning *                                   --- to query usuwa wszystkie rekordy. Czy nie lepiej zamist exists uzyc ...where p.id in (select p2.id...)?
+ ;
+
+--9--
+
+with recursive fib(n,m) as(
+	select 0,1
+	union all
+	select fib.m,fib.n+m
+	from fib
+	where n<100
+) select n from fib
+;
