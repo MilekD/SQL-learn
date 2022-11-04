@@ -7,7 +7,7 @@ left join product_manufactured_region pmr
 on p.product_man_region = pmr.id
 group by pmr.region_name
 order by 2 desc
-
+;
 
 --2--
 select 
@@ -18,7 +18,7 @@ left join product_manufactured_region pmr
 on p.product_man_region = pmr.id
 group by 
 pmr.region_name 
-
+;
 --3--
 
 select 
@@ -32,7 +32,7 @@ left join product_manufactured_region pmr
 on p.product_man_region = pmr.id
 group by 1,2
 having pmr.region_name = 'EMEA'
-
+;
 
 -- ponizej wydajniejsze o 1ms, czy da sie to napsiac jeszcze wydajniej?
 
@@ -48,7 +48,7 @@ join (select * from
 		product_manufactured_region pmr 
 		where pmr.region_name='EMEA')pmr2 on p.product_man_region=pmr2.id	
 group by 1,2
-
+;
 
 --4--
 with ab as(
@@ -62,6 +62,7 @@ sum(sal_value) as suma
 from ab
 group by rok_miesiac
 order by suma desc
+;
 
 -- Przy okazji pytanie, czy takie zapytanie jak pozniej nie zwraca oczekiwanych rezultatow, dlatego ze
 -- nie mozna korzystac z sum() w funkcji okna?
@@ -76,5 +77,21 @@ sal_value,
 rok_miesiac,
 sum(sal_value) over (partition by rok_miesiac)
 from ab
+;
 
 --5--
+select 
+	coalesce(extract(year from p.manufactured_date),2022) as manufactured_year,
+	pmr.region_name,
+	p.product_code,
+grouping (coalesce(extract(year from p.manufactured_date),2022),pmr.region_name,p.product_code ),
+avg(product_quantity)
+from products p 
+left join product_manufactured_region pmr 
+on p.product_man_region = pmr.id
+group by grouping sets (
+	(coalesce(extract(year from p.manufactured_date),2022)),
+	(pmr.region_name),
+	(p.product_code)				
+	)
+;
