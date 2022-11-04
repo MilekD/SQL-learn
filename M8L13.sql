@@ -95,3 +95,39 @@ group by grouping sets (
 	(p.product_code)				
 	)
 ;
+
+--6--
+
+select 
+	p.product_name,
+	p.product_code,
+	p.manufactured_date,
+	p.product_man_region,
+	pmr.region_name,
+	sum (p.product_quantity) over (partition by pmr.region_name)
+from products p 
+left join product_manufactured_region pmr 
+on p.product_man_region = pmr.id
+;
+
+--7--
+with tab as(
+select 
+	p.product_name,
+	p.product_code,
+	p.manufactured_date,
+	p.product_man_region,
+	pmr.region_name,
+	sum (p.product_quantity) over (partition by pmr.region_name) as sum
+from products p 
+left join product_manufactured_region pmr 
+on p.product_man_region = pmr.id
+)
+select *
+from (select 
+	product_name,
+	region_name,
+	dense_rank () over (order by sum desc) as drank
+	from tab) ab
+where ab.drank=2
+;
