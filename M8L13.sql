@@ -34,7 +34,7 @@ group by 1,2
 having pmr.region_name = 'EMEA'
 ;
 
--- ponizej wydajniejsze o 1ms, czy da sie to napsiac jeszcze wydajniej?
+-- Ponizej wydajniejsze o 1ms, czy da sie to napsiac jeszcze wydajniej?
 
 
 select 
@@ -64,8 +64,7 @@ group by rok_miesiac
 order by suma desc
 ;
 
--- Przy okazji pytanie, czy takie zapytanie jak pozniej nie zwraca oczekiwanych rezultatow, dlatego ze
--- nie mozna korzystac z sum() w funkcji okna?
+-- Dlaczego takie zapytanie jak pozniej nie zwraca oczekiwanych rezultatow?
 
 with ab as(
 select s.sal_value,
