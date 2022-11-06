@@ -52,8 +52,6 @@ having extract(year from t.transaction_date) = 2019
 
 --4--
 
---4--
-
 with rok_sum as (
 select 
 	extract(year from t.transaction_date) as rok,
