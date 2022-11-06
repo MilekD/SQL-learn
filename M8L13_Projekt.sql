@@ -80,3 +80,28 @@ select
  prev_year_sum - suma as increases_of_spend_yoy
 from prev_y
 ;
+
+--5--
+select 
+t.id_transaction,
+t.transaction_date,
+first_value(t.transaction_date) over (order by t.transaction_date groups between current row and 1 following exclude current row) as next_tech_trans,
+first_value(t.transaction_date) over (order by t.transaction_date groups between current row and 1 following exclude current row) - t.transaction_date as day_since_previous,
+t.transaction_value,
+t.transaction_description 
+from expense_tracker.transactions t
+left join (select * from 
+		   expense_tracker.transaction_type tt 
+		   where tt.transaction_type_name = 'Obciążenie') tt2
+on t.id_trans_type = tt2.id_trans_type 
+join (select * 
+	  from expense_tracker.transaction_bank_accounts tba
+	  where tba.bank_account_name = 'ROR - Janusz'
+	  ) tba2 
+on t.id_trans_ba = tba2.id_trans_ba 
+join (select * from expense_tracker.transaction_subcategory ts 
+		   where ts.subcategory_name='Technologie') tsu 
+		   on t.id_trans_subcat = tsu.id_trans_subcat
+where extract(year from t.transaction_date)||'_'||extract(quarter from t.transaction_date) = '2020_1'
+;
+-- zwraca tylko 1 rekord ?
